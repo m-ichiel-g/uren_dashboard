@@ -158,18 +158,15 @@ vraag = st.text_input("Stel hier je vraag over de dataset (bijv. 'Welke maand ha
 
 if vraag:
     import openai
-    from openai import OpenAI
-    import json
-
     openai_api_key = os.getenv("OPENAI_API_KEY")
+
     if not openai_api_key:
         st.warning("API-sleutel niet gevonden. Zet OPENAI_API_KEY als omgevingsvariabele.")
     else:
+        openai.api_key = openai_api_key
+
         with st.spinner("AI is je vraag aan het analyseren..."):
             try:
-                # Gebruik de nieuwe OpenAI client
-                client = OpenAI(api_key=openai_api_key)
-
                 kolommen = [
                     "Begindatum", "Jaar", "Maand", "Week", "Kwartaal",
                     "Omzetgroep", "Totaal na correctie", "Aantal", "Project",
@@ -187,18 +184,18 @@ Dataset (CSV):
 {tabel_str}
 """
 
-                # Aanroep met de nieuwe client
-                response = openai.ChatCompletions.create(
+                response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.2
                 )
 
-                antwoord = response.choices[0].message.content
+                antwoord = response.choices[0].message['content']
                 st.success("AI Antwoord:")
                 st.markdown(antwoord)
 
             except Exception as e:
                 st.error(f"Er ging iets mis bij het uitvoeren van de AI-analyse:\n\n{str(e)}")
+
 
 
