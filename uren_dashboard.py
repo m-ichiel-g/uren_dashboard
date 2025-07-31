@@ -157,8 +157,10 @@ st.subheader("🤖 AI-vraag over je data")
 vraag = st.text_input("Stel hier je vraag over de dataset (bijv. 'Welke maand had de meeste omzet?')")
 
 if vraag:
-    from openai import OpenAI
-    openai_api_key = os.getenv("OPENAI_API_KEY")
+    import openai
+    
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
     if not openai_api_key:
         st.warning("API-sleutel niet gevonden. Zet OPENAI_API_KEY als omgevingsvariabele.")
