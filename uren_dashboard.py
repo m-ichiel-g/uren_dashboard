@@ -158,14 +158,14 @@ vraag = st.text_input("Stel hier je vraag over de dataset (bijv. 'Welke maand ha
 
 if vraag:
     import openai
+    import os
+
+    openai_api_key = os.getenv("OPENAI_API_KEY")
     
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-
-
     if not openai_api_key:
         st.warning("API-sleutel niet gevonden. Zet OPENAI_API_KEY als omgevingsvariabele.")
     else:
-        client = OpenAI(api_key=openai_api_key)
+        openai.api_key = openai_api_key
 
         with st.spinner("AI is je vraag aan het analyseren..."):
             try:
@@ -186,7 +186,7 @@ Dataset (CSV):
 {tabel_str}
 """
 
-                response = client.chat.completions.create(
+                response = openai.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.2
@@ -198,6 +198,4 @@ Dataset (CSV):
 
             except Exception as e:
                 st.error(f"Er ging iets mis bij het uitvoeren van de AI-analyse:\n\n{str(e)}")
-
-
 
