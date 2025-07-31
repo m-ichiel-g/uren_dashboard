@@ -3,7 +3,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import openai
+from openai import OpenAI 
 import os
 from pandasai import SmartDataframe
 
@@ -157,13 +157,13 @@ st.subheader("🤖 AI-vraag over je data")
 vraag = st.text_input("Stel hier je vraag over de dataset (bijv. 'Welke maand had de meeste omzet?')")
 
 if vraag:
-    import openai
+    from openai import OpenAI
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
     if not openai_api_key:
         st.warning("API-sleutel niet gevonden. Zet OPENAI_API_KEY als omgevingsvariabele.")
     else:
-        openai.api_key = openai_api_key
+        client = OpenAI(api_key=openai_api_key)
 
         with st.spinner("AI is je vraag aan het analyseren..."):
             try:
@@ -184,13 +184,13 @@ Dataset (CSV):
 {tabel_str}
 """
 
-                response = openai.ChatCompletion.create(
+                response = client.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.2
                 )
 
-                antwoord = response.choices[0].message['content']
+                antwoord = response.choices[0].message.content
                 st.success("AI Antwoord:")
                 st.markdown(antwoord)
 
