@@ -5,7 +5,6 @@ import pandas as pd
 import plotly.express as px
 import openai
 import os
-from pandasai import SmartDataframe
 
 # --- Configuratie ---
 st.set_page_config(page_title="Urenanalyse Dashboard", layout="wide")
