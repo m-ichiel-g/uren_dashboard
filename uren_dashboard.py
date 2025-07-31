@@ -6,7 +6,6 @@ import plotly.express as px
 import openai
 import os
 from pandasai import SmartDataframe
-from pandasai.llm.openai import OpenAI
 
 # --- Configuratie ---
 st.set_page_config(page_title="Urenanalyse Dashboard", layout="wide")
@@ -189,7 +188,7 @@ Dataset (CSV):
 """
 
                 # Aanroep met de nieuwe client
-                response = client.chat.completions.create(
+                response = openai.ChatCompletions.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.2
