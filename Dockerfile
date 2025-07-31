@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8501
 
 # Start Streamlit bij container-run
-CMD ["streamlit", "run", "uren_dashboard.py", "--server.port=$PORT", "--server.address=0.0.0.0"]
+CMD sh -c "streamlit run uren_dashboard.py --server.port=\$PORT --server.address=0.0.0.0"
